@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
 
-import java.util.List;
-
 import id.cybershift.fakhrimovie.data.source.CatalogueRepository;
 import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 
@@ -21,7 +19,7 @@ public class FavoriteMovieViewModel extends ViewModel {
         return catalogueRepository.getAllFavoriteMovie();
     }
 
-    void deleteFavoriteMovie(FavoriteEntity favoriteEntity){
+    void deleteFavoriteMovie(FavoriteEntity favoriteEntity) {
         catalogueRepository.deleteFavorite(favoriteEntity);
     }
 }

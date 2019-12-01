@@ -10,6 +10,17 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "favorite")
 public class FavoriteEntity implements Parcelable {
+    public static final Creator<FavoriteEntity> CREATOR = new Creator<FavoriteEntity>() {
+        @Override
+        public FavoriteEntity createFromParcel(Parcel in) {
+            return new FavoriteEntity(in);
+        }
+
+        @Override
+        public FavoriteEntity[] newArray(int size) {
+            return new FavoriteEntity[size];
+        }
+    };
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "title")
@@ -42,18 +53,6 @@ public class FavoriteEntity implements Parcelable {
         poster = in.readString();
         type = in.readInt();
     }
-
-    public static final Creator<FavoriteEntity> CREATOR = new Creator<FavoriteEntity>() {
-        @Override
-        public FavoriteEntity createFromParcel(Parcel in) {
-            return new FavoriteEntity(in);
-        }
-
-        @Override
-        public FavoriteEntity[] newArray(int size) {
-            return new FavoriteEntity[size];
-        }
-    };
 
     public String getTitle() {
         return title;

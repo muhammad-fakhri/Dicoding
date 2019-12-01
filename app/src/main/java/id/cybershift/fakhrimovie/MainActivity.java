@@ -1,19 +1,14 @@
 package id.cybershift.fakhrimovie;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
 
-import id.cybershift.fakhrimovie.ui.SectionsPagerAdapter;
 import id.cybershift.fakhrimovie.ui.favorite.FavoriteFragment;
 import id.cybershift.fakhrimovie.ui.movie.MovieFragment;
 import id.cybershift.fakhrimovie.ui.tvshow.TVShowFragment;

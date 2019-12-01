@@ -4,6 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TVShowResponse implements Parcelable {
+    public static final Creator<TVShowResponse> CREATOR = new Creator<TVShowResponse>() {
+        @Override
+        public TVShowResponse createFromParcel(Parcel in) {
+            return new TVShowResponse(in);
+        }
+
+        @Override
+        public TVShowResponse[] newArray(int size) {
+            return new TVShowResponse[size];
+        }
+    };
     private String title;
     private String overview;
     private double rate;
@@ -25,18 +36,6 @@ public class TVShowResponse implements Parcelable {
         year = in.readString();
         poster = in.readString();
     }
-
-    public static final Creator<TVShowResponse> CREATOR = new Creator<TVShowResponse>() {
-        @Override
-        public TVShowResponse createFromParcel(Parcel in) {
-            return new TVShowResponse(in);
-        }
-
-        @Override
-        public TVShowResponse[] newArray(int size) {
-            return new TVShowResponse[size];
-        }
-    };
 
     public String getTitle() {
         return title;

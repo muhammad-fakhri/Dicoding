@@ -3,6 +3,8 @@ package id.cybershift.fakhrimovie.data.source;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,13 +153,13 @@ public class FakeCatalogueRepository implements CatalogueDataSource {
     }
 
     @Override
-    public LiveData<List<FavoriteEntity>> getAllFavoriteMovie() {
-        return localRepository.getAllFavoriteMovie();
+    public LiveData<PagedList<FavoriteEntity>> getAllFavoriteMovie() {
+        return new LivePagedListBuilder<>(localRepository.getAllFavoriteMovieAsPaged(), 5).build();
     }
 
     @Override
-    public LiveData<List<FavoriteEntity>> getAllFavoriteTVShow() {
-        return localRepository.getAllFavoriteTVShow();
+    public LiveData<PagedList<FavoriteEntity>> getAllFavoriteTVShow() {
+        return new LivePagedListBuilder<>(localRepository.getAllFavoriteTVShowAsPaged(), 5).build();
     }
 
     @Override

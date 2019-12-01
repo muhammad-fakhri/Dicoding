@@ -4,6 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class MovieResponse implements Parcelable {
+    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
+        @Override
+        public MovieResponse createFromParcel(Parcel in) {
+            return new MovieResponse(in);
+        }
+
+        @Override
+        public MovieResponse[] newArray(int size) {
+            return new MovieResponse[size];
+        }
+    };
     private String title;
     private String overview;
     private double rate;
@@ -25,18 +36,6 @@ public class MovieResponse implements Parcelable {
         year = in.readString();
         poster = in.readString();
     }
-
-    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
-        @Override
-        public MovieResponse createFromParcel(Parcel in) {
-            return new MovieResponse(in);
-        }
-
-        @Override
-        public MovieResponse[] newArray(int size) {
-            return new MovieResponse[size];
-        }
-    };
 
     public String getTitle() {
         return title;

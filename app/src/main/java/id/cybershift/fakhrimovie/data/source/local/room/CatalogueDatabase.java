@@ -10,8 +10,6 @@ import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 
 @Database(entities = {FavoriteEntity.class}, version = 1, exportSchema = false)
 public abstract class CatalogueDatabase extends RoomDatabase {
-    public abstract CatalogueDao catalogueDao();
-
     private static volatile CatalogueDatabase INSTANCE;
 
     public static CatalogueDatabase getInstance(Context context) {
@@ -26,4 +24,6 @@ public abstract class CatalogueDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    public abstract CatalogueDao catalogueDao();
 }

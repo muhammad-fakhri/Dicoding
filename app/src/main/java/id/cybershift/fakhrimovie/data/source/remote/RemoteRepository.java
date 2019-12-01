@@ -10,8 +10,8 @@ import id.cybershift.fakhrimovie.utils.DataSource;
 
 public class RemoteRepository {
     private static RemoteRepository INSTANCE;
-    private DataSource dataSource;
     private final long SERVICE_LATENCY_IN_MILLIS = 2000;
+    private DataSource dataSource;
 
     public RemoteRepository(DataSource dataSource) {
         this.dataSource = dataSource;

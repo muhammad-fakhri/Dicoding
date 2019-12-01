@@ -4,7 +4,6 @@ import android.app.Application;
 
 import id.cybershift.fakhrimovie.data.source.CatalogueRepository;
 import id.cybershift.fakhrimovie.data.source.local.LocalRepository;
-import id.cybershift.fakhrimovie.data.source.local.room.CatalogueDao;
 import id.cybershift.fakhrimovie.data.source.remote.RemoteRepository;
 import id.cybershift.fakhrimovie.utils.DataSource;
 

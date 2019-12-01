@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,59 +26,9 @@ public class FavoriteMovieFragment extends Fragment {
     private RecyclerView rvFavMovie;
     private FavoriteMovieViewModel viewModel;
     private ProgressBar progressBar;
+    private TextView emptyMovie;
     //    private FavoriteMovieAdapter adapter;
     private FavMoviePagedAdapter adapter;
-
-    public static FavoriteMovieFragment newInstance() {
-        return new FavoriteMovieFragment();
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.favorite_movie_fragment, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        rvFavMovie = view.findViewById(R.id.favorite_movie_rv);
-        progressBar = view.findViewById(R.id.favorite_movie_pb);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        progressBar.setVisibility(View.VISIBLE);
-        if (getActivity() != null) {
-//            adapter = new FavoriteMovieAdapter();
-            adapter = new FavMoviePagedAdapter();
-//            adapter.setActivity(this.getActivity());
-
-            viewModel = obtainViewModel(getActivity());
-            viewModel.getAllFavoriteMoviePaged().observe(this, favoriteMovies -> {
-                progressBar.setVisibility(View.GONE);
-//                adapter.setListFavorites(favoriteMovies);
-                adapter.submitList(favoriteMovies);
-                adapter.setViewModel(viewModel);
-                adapter.notifyDataSetChanged();
-            });
-
-            rvFavMovie.setLayoutManager(new LinearLayoutManager(getContext()));
-            rvFavMovie.setHasFixedSize(true);
-            rvFavMovie.setAdapter(adapter);
-
-            itemTouchHelper.attachToRecyclerView(rvFavMovie);
-        }
-    }
-
-    @NonNull
-    private static FavoriteMovieViewModel obtainViewModel(FragmentActivity activity) {
-        // Use a Factory to inject dependencies into the ViewModel
-        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
-        return ViewModelProviders.of(activity, factory).get(FavoriteMovieViewModel.class);
-    }
-
     private ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
         @Override
         public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -95,10 +46,67 @@ public class FavoriteMovieFragment extends Fragment {
                 int swipedPosition = viewHolder.getAdapterPosition();
                 FavoriteEntity favoriteEntity = adapter.getItemById(swipedPosition);
                 viewModel.deleteFavoriteMovie(favoriteEntity);
-                Snackbar snackbar = Snackbar.make(getView(), "Unfavoriting "+favoriteEntity.getTitle(), Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(getView(), "Unfavoriting " + favoriteEntity.getTitle(), Snackbar.LENGTH_LONG);
 //                snackbar.setAction(R.string.message_ok, v -> viewModel.setBookmark(favoriteEntity));
                 snackbar.show();
             }
         }
     });
+
+    public static FavoriteMovieFragment newInstance() {
+        return new FavoriteMovieFragment();
+    }
+
+    @NonNull
+    private static FavoriteMovieViewModel obtainViewModel(FragmentActivity activity) {
+        // Use a Factory to inject dependencies into the ViewModel
+        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
+        return ViewModelProviders.of(activity, factory).get(FavoriteMovieViewModel.class);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.favorite_movie_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rvFavMovie = view.findViewById(R.id.favorite_movie_rv);
+        progressBar = view.findViewById(R.id.favorite_movie_pb);
+        emptyMovie = view.findViewById(R.id.emptyMovie);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        progressBar.setVisibility(View.VISIBLE);
+
+        if (getActivity() != null) {
+//            adapter = new FavoriteMovieAdapter();
+            adapter = new FavMoviePagedAdapter();
+//            adapter.setActivity(this.getActivity());
+
+            viewModel = obtainViewModel(getActivity());
+            viewModel.getAllFavoriteMoviePaged().observe(this, favoriteMovies -> {
+                progressBar.setVisibility(View.GONE);
+                if (favoriteMovies.size() == 0) {
+                    emptyMovie.setVisibility(View.VISIBLE);
+                } else {
+                    emptyMovie.setVisibility(View.GONE);
+                }
+//                adapter.setListFavorites(favoriteMovies);
+                adapter.submitList(favoriteMovies);
+                adapter.setViewModel(viewModel);
+                adapter.notifyDataSetChanged();
+            });
+
+            rvFavMovie.setLayoutManager(new LinearLayoutManager(getContext()));
+            rvFavMovie.setHasFixedSize(true);
+            rvFavMovie.setAdapter(adapter);
+
+            itemTouchHelper.attachToRecyclerView(rvFavMovie);
+        }
+    }
 }

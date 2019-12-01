@@ -3,7 +3,6 @@ package id.cybershift.fakhrimovie.ui.detail;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -14,7 +13,6 @@ import org.junit.Test;
 
 import id.cybershift.fakhrimovie.R;
 import id.cybershift.fakhrimovie.data.source.local.entity.TVShowEntity;
-import id.cybershift.fakhrimovie.utils.EspressoIdlingResource;
 import id.cybershift.fakhrimovie.utils.FakeDataSource;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -49,9 +47,9 @@ public class DetailActivityTVShowTest {
 
     @Test
     public void loadTVShows() {
-        try{
+        try {
             Thread.sleep(2000);
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         onView(withId(R.id.detail_name)).check(matches(isDisplayed()));

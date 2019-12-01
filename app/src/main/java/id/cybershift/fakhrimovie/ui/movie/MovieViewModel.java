@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 import id.cybershift.fakhrimovie.data.source.CatalogueRepository;
+import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 
 public class MovieViewModel extends ViewModel {
     private CatalogueRepository catalogueRepository;

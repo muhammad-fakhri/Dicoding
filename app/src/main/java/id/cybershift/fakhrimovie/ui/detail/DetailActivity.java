@@ -29,6 +29,14 @@ public class DetailActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnFavorite;
 
+    @NonNull
+    private static DetailViewModel obtainViewModel(AppCompatActivity activity) {
+        // Use a Factory to inject dependencies into the ViewModel
+        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
+
+        return ViewModelProviders.of(activity, factory).get(DetailViewModel.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +64,10 @@ public class DetailActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (getIntent().getExtras().getString(EXTRA_ITEM_TYPE).equals("movie")) {
-            progressBar.setVisibility(View.GONE);
             viewModel.getMovieByPosition().observe(this, movieEntity -> {
+                if (movieEntity != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
                 detailName.setText(movieEntity.getTitle());
                 detailRate.setText(String.valueOf(movieEntity.getRate()));
                 detailYear.setText(movieEntity.getYear());
@@ -81,8 +91,10 @@ public class DetailActivity extends AppCompatActivity {
             });
 
         } else if (getIntent().getExtras().getString(EXTRA_ITEM_TYPE).equals("tv")) {
-            progressBar.setVisibility(View.GONE);
             viewModel.getTVShowByPosition().observe(this, tvshowEntity -> {
+                if (tvshowEntity != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
                 detailName.setText(tvshowEntity.getTitle());
                 detailRate.setText(String.valueOf(tvshowEntity.getRate()));
                 detailYear.setText(tvshowEntity.getYear());
@@ -116,13 +128,5 @@ public class DetailActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @NonNull
-    private static DetailViewModel obtainViewModel(AppCompatActivity activity) {
-        // Use a Factory to inject dependencies into the ViewModel
-        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
-
-        return ViewModelProviders.of(activity, factory).get(DetailViewModel.class);
     }
 }

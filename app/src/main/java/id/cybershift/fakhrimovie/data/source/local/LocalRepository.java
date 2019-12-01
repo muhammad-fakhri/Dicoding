@@ -12,10 +12,9 @@ import id.cybershift.fakhrimovie.data.source.local.room.CatalogueDao;
 import id.cybershift.fakhrimovie.data.source.local.room.CatalogueDatabase;
 
 public class LocalRepository {
+    private static LocalRepository INSTANCE;
     private CatalogueDao catalogueDao;
     private ExecutorService executorService;
-
-    private static LocalRepository INSTANCE;
 
     private LocalRepository(Application application) {
         executorService = Executors.newSingleThreadExecutor();

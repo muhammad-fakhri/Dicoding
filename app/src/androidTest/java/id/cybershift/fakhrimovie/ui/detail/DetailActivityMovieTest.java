@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.logging.Handler;
-
 import id.cybershift.fakhrimovie.R;
 import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 import id.cybershift.fakhrimovie.utils.EspressoIdlingResource;
@@ -51,9 +49,9 @@ public class DetailActivityMovieTest {
 
     @Test
     public void loadMovie() {
-        try{
+        try {
             Thread.sleep(2000);
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         onView(withId(R.id.detail_name)).check(matches(isDisplayed()));

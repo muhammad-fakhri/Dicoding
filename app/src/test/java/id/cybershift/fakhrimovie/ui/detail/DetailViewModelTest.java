@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import id.cybershift.fakhrimovie.data.source.CatalogueRepository;
 import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.TVShowEntity;
-import id.cybershift.fakhrimovie.data.source.CatalogueRepository;
 import id.cybershift.fakhrimovie.utils.FakeDataSource;
 
 import static org.mockito.Mockito.mock;

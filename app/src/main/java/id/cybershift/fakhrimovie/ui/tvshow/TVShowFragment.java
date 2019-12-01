@@ -35,6 +35,12 @@ public class TVShowFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @NonNull
+    private static TVShowViewModel obtainViewModel(FragmentActivity activity) {
+        // Use a Factory to inject dependencies into the ViewModel
+        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
+        return ViewModelProviders.of(activity, factory).get(TVShowViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +53,7 @@ public class TVShowFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvTVShow = view.findViewById(R.id.tvshow_rv);
-        progressBar=view.findViewById(R.id.tvshow_pb);
+        progressBar = view.findViewById(R.id.tvshow_pb);
     }
 
     @Override
@@ -69,12 +75,5 @@ public class TVShowFragment extends Fragment {
             rvTVShow.setHasFixedSize(true);
             rvTVShow.setAdapter(adapter);
         }
-    }
-
-    @NonNull
-    private static TVShowViewModel obtainViewModel(FragmentActivity activity) {
-        // Use a Factory to inject dependencies into the ViewModel
-        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
-        return ViewModelProviders.of(activity, factory).get(TVShowViewModel.class);
     }
 }

@@ -1,7 +1,8 @@
 package id.cybershift.fakhrimovie.data.source;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
+import androidx.paging.PagedList;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,11 +22,13 @@ import id.cybershift.fakhrimovie.data.source.remote.response.MovieResponse;
 import id.cybershift.fakhrimovie.data.source.remote.response.TVShowResponse;
 import id.cybershift.fakhrimovie.utils.FakeDataSource;
 import id.cybershift.fakhrimovie.utils.LiveDataTestUtils;
+import id.cybershift.fakhrimovie.utils.PagedListUtil;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +45,7 @@ public class CatalogueRepositoryTest {
     private MovieEntity movieEntity = FakeDataSource.getMovie(0);
     private ArrayList<TVShowResponse> tvShowResponses = FakeDataSource.getTVShowsData();
     private TVShowEntity tvShowEntity = FakeDataSource.getTVShow(1);
+//    private List<FavoriteEntity>
 
     @Before
     public void setUp() {
@@ -111,12 +115,11 @@ public class CatalogueRepositoryTest {
 
     @Test
     public void getAllFavoriteMovie() {
-        MutableLiveData<List<FavoriteEntity>> dummyFavMovie = new MutableLiveData<>();
         ArrayList<MovieEntity> movies = FakeDataSource.generateDummyRemoteMovies();
-        List<FavoriteEntity> favorite = new ArrayList<>();
+        List<FavoriteEntity> favoriteMovie = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
             MovieEntity item = movies.get(i);
-            favorite.add(new FavoriteEntity(
+            favoriteMovie.add(new FavoriteEntity(
                     item.getTitle(),
                     item.getOverview(),
                     item.getRate(),
@@ -125,25 +128,22 @@ public class CatalogueRepositoryTest {
                     0
             ));
         }
-        dummyFavMovie.setValue(favorite);
-
-        when(localRepository.getAllFavoriteMovie()).thenReturn(dummyFavMovie);
-
-        List<FavoriteEntity> result = LiveDataTestUtils.getValue(catalogueRepository.getAllFavoriteMovie());
-
-        verify(localRepository).getAllFavoriteMovie();
+        DataSource.Factory<Integer, FavoriteEntity> dataSourceFactory = mock(DataSource.Factory.class);
+        when(localRepository.getAllFavoriteMovieAsPaged()).thenReturn(dataSourceFactory);
+        catalogueRepository.getAllFavoriteMovie();
+        PagedList<FavoriteEntity> result = PagedListUtil.mockPagedList(favoriteMovie);
+        verify(localRepository).getAllFavoriteMovieAsPaged();
         assertNotNull(result);
-        assertEquals(movieResponses.size(), result.size());
+        assertEquals(movies.size(), result.size());
     }
 
     @Test
     public void getAllFavoriteTVShow() {
-        MutableLiveData<List<FavoriteEntity>> dummyFavTVShow = new MutableLiveData<>();
         ArrayList<TVShowEntity> tvshows = FakeDataSource.generateDummyRemoteTVShows();
-        List<FavoriteEntity> favorite = new ArrayList<>();
+        List<FavoriteEntity> favoriteTVShow = new ArrayList<>();
         for (int i = 0; i < tvshows.size(); i++) {
             TVShowEntity item = tvshows.get(i);
-            favorite.add(new FavoriteEntity(
+            favoriteTVShow.add(new FavoriteEntity(
                     item.getTitle(),
                     item.getOverview(),
                     item.getRate(),
@@ -152,14 +152,12 @@ public class CatalogueRepositoryTest {
                     0
             ));
         }
-        dummyFavTVShow.setValue(favorite);
-
-        when(localRepository.getAllFavoriteTVShow()).thenReturn(dummyFavTVShow);
-
-        List<FavoriteEntity> result = LiveDataTestUtils.getValue(catalogueRepository.getAllFavoriteTVShow());
-
-        verify(localRepository).getAllFavoriteTVShow();
+        DataSource.Factory<Integer, FavoriteEntity> dataSourceFactory = mock(DataSource.Factory.class);
+        when(localRepository.getAllFavoriteTVShowAsPaged()).thenReturn(dataSourceFactory);
+        catalogueRepository.getAllFavoriteTVShow();
+        PagedList<FavoriteEntity> result = PagedListUtil.mockPagedList(favoriteTVShow);
+        verify(localRepository).getAllFavoriteTVShowAsPaged();
         assertNotNull(result);
-        assertEquals(tvShowResponses.size(), result.size());
+        assertEquals(tvshows.size(), result.size());
     }
 }

@@ -18,6 +18,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="unfavorite">Unfavorite</string>
+    <string name="empty_movie">There is no favorite movie</string>
+    <string name="empty_tvshow">There is no favorite tvshow</string>
 
 
 </resources>

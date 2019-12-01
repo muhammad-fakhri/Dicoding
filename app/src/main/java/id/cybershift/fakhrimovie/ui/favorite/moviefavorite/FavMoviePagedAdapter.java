@@ -22,6 +22,19 @@ import id.cybershift.fakhrimovie.R;
 import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 
 public class FavMoviePagedAdapter extends PagedListAdapter<FavoriteEntity, FavMoviePagedAdapter.FavMoviePagedViewHolder> {
+    private static DiffUtil.ItemCallback<FavoriteEntity> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<FavoriteEntity>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull FavoriteEntity oldItem, @NonNull FavoriteEntity newItem) {
+                    return oldItem.getTitle().equals(newItem.getTitle());
+                }
+
+                @SuppressLint("DiffUtilEquals")
+                @Override
+                public boolean areContentsTheSame(@NonNull FavoriteEntity oldItem, @NonNull FavoriteEntity newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
     //    private FavoriteMovieFragmentCallback callback;
     private FavoriteMovieViewModel viewModel;
 
@@ -46,20 +59,6 @@ public class FavMoviePagedAdapter extends PagedListAdapter<FavoriteEntity, FavMo
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item2, parent, false);
         return new FavMoviePagedViewHolder(view);
     }
-
-    private static DiffUtil.ItemCallback<FavoriteEntity> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<FavoriteEntity>() {
-                @Override
-                public boolean areItemsTheSame(@NonNull FavoriteEntity oldItem, @NonNull FavoriteEntity newItem) {
-                    return oldItem.getTitle().equals(newItem.getTitle());
-                }
-
-                @SuppressLint("DiffUtilEquals")
-                @Override
-                public boolean areContentsTheSame(@NonNull FavoriteEntity oldItem, @NonNull FavoriteEntity newItem) {
-                    return oldItem.equals(newItem);
-                }
-            };
 
     FavoriteEntity getItemById(int swipedPosition) {
         return getItem(swipedPosition);
