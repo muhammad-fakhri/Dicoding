@@ -2,6 +2,7 @@ package id.cybershift.fakhrimovie.ui;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -9,8 +10,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import id.cybershift.fakhrimovie.R;
-import id.cybershift.fakhrimovie.ui.movie.MovieFragment;
-import id.cybershift.fakhrimovie.ui.tvshow.TVShowFragment;
+import id.cybershift.fakhrimovie.ui.favorite.moviefavorite.FavoriteMovieFragment;
+import id.cybershift.fakhrimovie.ui.favorite.tvshowfavorite.FavoriteTVShowFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -30,9 +31,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new MovieFragment();
+            return new FavoriteMovieFragment();
         } else {
-            return new TVShowFragment();
+            return new FavoriteTVShowFragment();
         }
     }
 
@@ -46,5 +47,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         // Show 2 total pages.
         return 2;
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 }

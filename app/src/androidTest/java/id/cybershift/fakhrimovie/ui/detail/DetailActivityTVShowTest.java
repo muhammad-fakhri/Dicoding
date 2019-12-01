@@ -39,16 +39,21 @@ public class DetailActivityTVShowTest {
 
     @Before
     public void setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.getEspressoIdlingResource());
+//        IdlingRegistry.getInstance().register(EspressoIdlingResource.getEspressoIdlingResource());
     }
 
     @After
     public void tearDown() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getEspressoIdlingResource());
+//        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getEspressoIdlingResource());
     }
 
     @Test
     public void loadTVShows() {
+        try{
+            Thread.sleep(2000);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withId(R.id.detail_name)).check(matches(isDisplayed()));
         onView(withId(R.id.detail_name)).check(matches(withText(dummyTVShow.getTitle())));
         onView(withId(R.id.detail_description)).check(matches(isDisplayed()));

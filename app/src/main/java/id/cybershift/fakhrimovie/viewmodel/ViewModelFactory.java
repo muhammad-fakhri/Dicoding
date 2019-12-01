@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 import id.cybershift.fakhrimovie.data.source.CatalogueRepository;
 import id.cybershift.fakhrimovie.di.Injection;
 import id.cybershift.fakhrimovie.ui.detail.DetailViewModel;
+import id.cybershift.fakhrimovie.ui.favorite.moviefavorite.FavoriteMovieViewModel;
+import id.cybershift.fakhrimovie.ui.favorite.tvshowfavorite.FavoriteTVShowViewModel;
 import id.cybershift.fakhrimovie.ui.movie.MovieViewModel;
 import id.cybershift.fakhrimovie.ui.tvshow.TVShowViewModel;
 
@@ -38,8 +40,12 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new MovieViewModel(catalogueRepository);
         } else if (modelClass.isAssignableFrom(TVShowViewModel.class)) {
             return (T) new TVShowViewModel(catalogueRepository);
-        } else if (modelClass.isAssignableFrom(DetailViewModel.class)){
-            return (T)new DetailViewModel(catalogueRepository);
+        } else if (modelClass.isAssignableFrom(DetailViewModel.class)) {
+            return (T) new DetailViewModel(catalogueRepository);
+        } else if (modelClass.isAssignableFrom(FavoriteMovieViewModel.class)) {
+            return (T) new FavoriteMovieViewModel(catalogueRepository);
+        } else if (modelClass.isAssignableFrom(FavoriteTVShowViewModel.class)) {
+            return (T) new FavoriteTVShowViewModel(catalogueRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

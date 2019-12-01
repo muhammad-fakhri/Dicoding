@@ -30,7 +30,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.activity = activity;
     }
 
-    public void setListMovies(ArrayList<MovieEntity> listMovies) {
+    void setListMovies(ArrayList<MovieEntity> listMovies) {
         if (listMovies != null) {
             this.listMovies.clear();
             this.listMovies.addAll(listMovies);
@@ -54,17 +54,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return listMovies.size();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder {
         ImageView imgPoster;
         TextView tvName, tvDescription;
-        Button favoriteBtn;
 
-        public MovieViewHolder(@NonNull View itemView) {
+        MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPoster = itemView.findViewById(R.id.item_poster);
             tvName = itemView.findViewById(R.id.item_name);
             tvDescription = itemView.findViewById(R.id.item_description);
-            favoriteBtn = itemView.findViewById(R.id.favorite_button);
         }
 
         void bind(MovieEntity movieItem, MovieViewHolder viewHolder, final int position) {
@@ -74,23 +72,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .into(viewHolder.imgPoster);
             tvName.setText(movieItem.getTitle());
             tvDescription.setText(movieItem.getOverview());
-            favoriteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //masukin data ke database pakai room
-                    Toast.makeText(activity, "PENCET TOMBOL FAVORITE", Toast.LENGTH_SHORT).show();
-                }
-            });
 
             //Set click listener
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(activity, DetailActivity.class);
-                    intent.putExtra(DetailActivity.EXTRA_ITEM_TYPE, "movie");
-                    intent.putExtra(DetailActivity.EXTRA_ITEM_POSITION, position);
-                    activity.startActivity(intent);
-                }
+            viewHolder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(activity, DetailActivity.class);
+                intent.putExtra(DetailActivity.EXTRA_ITEM_TYPE, "movie");
+                intent.putExtra(DetailActivity.EXTRA_ITEM_POSITION, position);
+                activity.startActivity(intent);
             });
         }
     }

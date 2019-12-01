@@ -17,6 +17,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
@@ -26,11 +27,6 @@ public class FakhriMovieTest {
 
     @Test
     public void toDetailActivityFromMovieFragment() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         onView(withId(R.id.movie_rv)).check(matches(isDisplayed()));
         onView(withId(R.id.movie_rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.detail_cl)).check(matches(isDisplayed()));
@@ -48,8 +44,9 @@ public class FakhriMovieTest {
 
     @Test
     public void toDetailActivityFromTVShowFragment() {
-        onView(withId(R.id.view_pager)).check(matches(isDisplayed()));
-        onView(withId(R.id.view_pager)).perform(swipeLeft());
+        onView(withId(R.id.navigation)).check(matches(isDisplayed()));
+        onView(withId(R.id.navigation_tvshow)).check(matches(isDisplayed()));
+        onView(withId(R.id.navigation_tvshow)).perform(click());
         onView(withId(R.id.tvshow_rv)).check(matches(isDisplayed()));
         onView(withId(R.id.tvshow_rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.detail_cl)).check(matches(isDisplayed()));

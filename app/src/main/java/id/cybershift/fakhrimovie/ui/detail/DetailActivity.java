@@ -3,6 +3,7 @@ package id.cybershift.fakhrimovie.ui.detail;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import id.cybershift.fakhrimovie.R;
+import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 import id.cybershift.fakhrimovie.viewmodel.ViewModelFactory;
 
 public class DetailActivity extends AppCompatActivity {
@@ -25,6 +27,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView detailName, detailYear, detailRate, detailDescription;
     private DetailViewModel viewModel;
     private ProgressBar progressBar;
+    private Button btnFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class DetailActivity extends AppCompatActivity {
         detailRate = findViewById(R.id.detail_rate);
         detailYear = findViewById(R.id.detail_year);
         detailDescription = findViewById(R.id.detail_description);
+
+        btnFavorite = findViewById(R.id.favorite_btn);
 
         progressBar = findViewById(R.id.detail_pb);
         progressBar.setVisibility(View.VISIBLE);
@@ -61,6 +66,18 @@ public class DetailActivity extends AppCompatActivity {
                         .load("https://image.tmdb.org/t/p/w185" + movieEntity.getPoster())
                         .apply(new RequestOptions().override(200, 250))
                         .into(detailPoster);
+
+                btnFavorite.setOnClickListener(v -> {
+                    Toast.makeText(DetailActivity.this, "Favorite " + movieEntity.getTitle(), Toast.LENGTH_SHORT).show();
+                    viewModel.insertFavorite(new FavoriteEntity(
+                            movieEntity.getTitle(),
+                            movieEntity.getOverview(),
+                            movieEntity.getRate(),
+                            movieEntity.getYear(),
+                            movieEntity.getPoster(),
+                            0
+                    ));
+                });
             });
 
         } else if (getIntent().getExtras().getString(EXTRA_ITEM_TYPE).equals("tv")) {
@@ -74,6 +91,18 @@ public class DetailActivity extends AppCompatActivity {
                         .load("https://image.tmdb.org/t/p/w185" + tvshowEntity.getPoster())
                         .apply(new RequestOptions().override(200, 250))
                         .into(detailPoster);
+
+                btnFavorite.setOnClickListener(v -> {
+                    Toast.makeText(DetailActivity.this, "Favorite " + tvshowEntity.getTitle(), Toast.LENGTH_SHORT).show();
+                    viewModel.insertFavorite(new FavoriteEntity(
+                            tvshowEntity.getTitle(),
+                            tvshowEntity.getOverview(),
+                            tvshowEntity.getRate(),
+                            tvshowEntity.getYear(),
+                            tvshowEntity.getPoster(),
+                            1
+                    ));
+                });
             });
 
         } else {

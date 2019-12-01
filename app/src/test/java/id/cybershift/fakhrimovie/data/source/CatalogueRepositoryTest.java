@@ -1,6 +1,7 @@
 package id.cybershift.fakhrimovie.data.source;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +10,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import id.cybershift.fakhrimovie.data.source.local.LocalRepository;
+import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.TVShowEntity;
 import id.cybershift.fakhrimovie.data.source.remote.RemoteRepository;
@@ -24,13 +28,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CatalogueRepositoryTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
+    private LocalRepository localRepository = Mockito.mock(LocalRepository.class);
     private RemoteRepository remoteRepository = Mockito.mock(RemoteRepository.class);
-    private FakeCatalogueRepository catalogueRepository = new FakeCatalogueRepository(remoteRepository);
+    private FakeCatalogueRepository catalogueRepository = new FakeCatalogueRepository(remoteRepository, localRepository);
 
     private ArrayList<MovieResponse> movieResponses = FakeDataSource.getMoviesData();
     private MovieEntity movieEntity = FakeDataSource.getMovie(0);
@@ -101,5 +107,59 @@ public class CatalogueRepositoryTest {
         assertEquals(tvShowEntity.getYear(), tvshow.getYear());
         assertEquals(String.valueOf(tvShowEntity.getRate()), String.valueOf(tvshow.getRate()));
         assertEquals(tvShowEntity.getPoster(), tvshow.getPoster());
+    }
+
+    @Test
+    public void getAllFavoriteMovie() {
+        MutableLiveData<List<FavoriteEntity>> dummyFavMovie = new MutableLiveData<>();
+        ArrayList<MovieEntity> movies = FakeDataSource.generateDummyRemoteMovies();
+        List<FavoriteEntity> favorite = new ArrayList<>();
+        for (int i = 0; i < movies.size(); i++) {
+            MovieEntity item = movies.get(i);
+            favorite.add(new FavoriteEntity(
+                    item.getTitle(),
+                    item.getOverview(),
+                    item.getRate(),
+                    item.getYear(),
+                    item.getPoster(),
+                    0
+            ));
+        }
+        dummyFavMovie.setValue(favorite);
+
+        when(localRepository.getAllFavoriteMovie()).thenReturn(dummyFavMovie);
+
+        List<FavoriteEntity> result = LiveDataTestUtils.getValue(catalogueRepository.getAllFavoriteMovie());
+
+        verify(localRepository).getAllFavoriteMovie();
+        assertNotNull(result);
+        assertEquals(movieResponses.size(), result.size());
+    }
+
+    @Test
+    public void getAllFavoriteTVShow() {
+        MutableLiveData<List<FavoriteEntity>> dummyFavTVShow = new MutableLiveData<>();
+        ArrayList<TVShowEntity> tvshows = FakeDataSource.generateDummyRemoteTVShows();
+        List<FavoriteEntity> favorite = new ArrayList<>();
+        for (int i = 0; i < tvshows.size(); i++) {
+            TVShowEntity item = tvshows.get(i);
+            favorite.add(new FavoriteEntity(
+                    item.getTitle(),
+                    item.getOverview(),
+                    item.getRate(),
+                    item.getYear(),
+                    item.getPoster(),
+                    0
+            ));
+        }
+        dummyFavTVShow.setValue(favorite);
+
+        when(localRepository.getAllFavoriteTVShow()).thenReturn(dummyFavTVShow);
+
+        List<FavoriteEntity> result = LiveDataTestUtils.getValue(catalogueRepository.getAllFavoriteTVShow());
+
+        verify(localRepository).getAllFavoriteTVShow();
+        assertNotNull(result);
+        assertEquals(tvShowResponses.size(), result.size());
     }
 }

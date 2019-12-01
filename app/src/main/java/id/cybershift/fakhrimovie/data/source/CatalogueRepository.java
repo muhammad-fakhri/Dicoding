@@ -3,10 +3,14 @@ package id.cybershift.fakhrimovie.data.source;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import id.cybershift.fakhrimovie.data.source.local.LocalRepository;
+import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.TVShowEntity;
 import id.cybershift.fakhrimovie.data.source.remote.RemoteRepository;
@@ -16,16 +20,18 @@ import id.cybershift.fakhrimovie.data.source.remote.response.TVShowResponse;
 public class CatalogueRepository implements CatalogueDataSource {
     private volatile static CatalogueRepository INSTANCE = null;
     private final RemoteRepository remoteRepository;
+    private final LocalRepository localRepository;
 
-    public CatalogueRepository(@NonNull RemoteRepository remoteRepository) {
+    public CatalogueRepository(@NonNull RemoteRepository remoteRepository, @NonNull LocalRepository localRepository) {
         this.remoteRepository = remoteRepository;
+        this.localRepository = localRepository;
     }
 
-    public static CatalogueRepository getInstance(RemoteRepository remoteData) {
+    public static CatalogueRepository getInstance(RemoteRepository remoteData, LocalRepository localRepository) {
         if (INSTANCE == null) {
             synchronized (CatalogueRepository.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new CatalogueRepository(remoteData);
+                    INSTANCE = new CatalogueRepository(remoteData, localRepository);
                 }
             }
         }
@@ -142,5 +148,25 @@ public class CatalogueRepository implements CatalogueDataSource {
         });
 
         return tvshowResult;
+    }
+
+    @Override
+    public LiveData<PagedList<FavoriteEntity>> getAllFavoriteMovie() {
+        return new LivePagedListBuilder<>(localRepository.getAllFavoriteMovieAsPaged(), 5).build();
+    }
+
+    @Override
+    public LiveData<PagedList<FavoriteEntity>> getAllFavoriteTVShow() {
+        return new LivePagedListBuilder<>(localRepository.getAllFavoriteTVShowAsPaged(), 5).build();
+    }
+
+    @Override
+    public void insertFavorite(final FavoriteEntity favoriteEntity) {
+        localRepository.insertFavorite(favoriteEntity);
+    }
+
+    @Override
+    public void deleteFavorite(final FavoriteEntity favoriteEntity) {
+        localRepository.deleteFavorite(favoriteEntity);
     }
 }

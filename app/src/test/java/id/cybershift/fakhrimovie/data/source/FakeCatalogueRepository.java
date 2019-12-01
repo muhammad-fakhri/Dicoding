@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import id.cybershift.fakhrimovie.data.source.local.LocalRepository;
+import id.cybershift.fakhrimovie.data.source.local.entity.FavoriteEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.MovieEntity;
 import id.cybershift.fakhrimovie.data.source.local.entity.TVShowEntity;
 import id.cybershift.fakhrimovie.data.source.remote.RemoteRepository;
@@ -16,16 +18,18 @@ import id.cybershift.fakhrimovie.data.source.remote.response.TVShowResponse;
 public class FakeCatalogueRepository implements CatalogueDataSource {
     private volatile static FakeCatalogueRepository INSTANCE = null;
     private final RemoteRepository remoteRepository;
+    private final LocalRepository localRepository;
 
-    FakeCatalogueRepository(@NonNull RemoteRepository remoteRepository) {
+    FakeCatalogueRepository(@NonNull RemoteRepository remoteRepository, @NonNull LocalRepository localRepository) {
         this.remoteRepository = remoteRepository;
+        this.localRepository = localRepository;
     }
 
-    public static FakeCatalogueRepository getInstance(RemoteRepository remoteData) {
+    public static FakeCatalogueRepository getInstance(RemoteRepository remoteData, LocalRepository localRepository) {
         if (INSTANCE == null) {
             synchronized (FakeCatalogueRepository.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FakeCatalogueRepository(remoteData);
+                    INSTANCE = new FakeCatalogueRepository(remoteData, localRepository);
                 }
             }
         }
@@ -144,5 +148,25 @@ public class FakeCatalogueRepository implements CatalogueDataSource {
             }
         });
         return tvshowResult;
+    }
+
+    @Override
+    public LiveData<List<FavoriteEntity>> getAllFavoriteMovie() {
+        return localRepository.getAllFavoriteMovie();
+    }
+
+    @Override
+    public LiveData<List<FavoriteEntity>> getAllFavoriteTVShow() {
+        return localRepository.getAllFavoriteTVShow();
+    }
+
+    @Override
+    public void insertFavorite(FavoriteEntity favoriteEntity) {
+        localRepository.insertFavorite(favoriteEntity);
+    }
+
+    @Override
+    public void deleteFavorite(FavoriteEntity favoriteEntity) {
+        localRepository.deleteFavorite(favoriteEntity);
     }
 }

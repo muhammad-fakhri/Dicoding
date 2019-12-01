@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +28,7 @@ public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.TVShowView
         this.activity = activity;
     }
 
-    public void setListTVShows(ArrayList<TVShowEntity> tvshows) {
+    void setListTVShows(ArrayList<TVShowEntity> tvshows) {
         if (tvshows != null) {
             listTVShows.clear();
             listTVShows.addAll(tvshows);
@@ -54,17 +52,15 @@ public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.TVShowView
         return listTVShows.size();
     }
 
-    public class TVShowViewHolder extends RecyclerView.ViewHolder {
+    class TVShowViewHolder extends RecyclerView.ViewHolder {
         ImageView imgPoster;
         TextView tvName, tvDescription;
-        Button favoriteBtn;
 
-        public TVShowViewHolder(@NonNull View itemView) {
+        TVShowViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPoster = itemView.findViewById(R.id.item_poster);
             tvName = itemView.findViewById(R.id.item_name);
             tvDescription = itemView.findViewById(R.id.item_description);
-            favoriteBtn=itemView.findViewById(R.id.favorite_button);
         }
 
         void bind(TVShowEntity tvshowItem, TVShowViewHolder viewHolder, final int position) {
@@ -76,23 +72,12 @@ public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.TVShowView
             tvName.setText(tvshowItem.getTitle());
             tvDescription.setText(tvshowItem.getOverview());
 
-            favoriteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //masukin data ke database pakai room
-                    Toast.makeText(activity, "PENCET TOMBOL FAVORITE TVSHOW", Toast.LENGTH_SHORT).show();
-                }
-            });
-
             //Set click listener
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(activity, DetailActivity.class);
-                    intent.putExtra(DetailActivity.EXTRA_ITEM_TYPE, "tv");
-                    intent.putExtra(DetailActivity.EXTRA_ITEM_POSITION, position);
-                    activity.startActivity(intent);
-                }
+            viewHolder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(activity, DetailActivity.class);
+                intent.putExtra(DetailActivity.EXTRA_ITEM_TYPE, "tv");
+                intent.putExtra(DetailActivity.EXTRA_ITEM_POSITION, position);
+                activity.startActivity(intent);
             });
         }
     }

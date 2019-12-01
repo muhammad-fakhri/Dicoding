@@ -28,7 +28,6 @@ public class MovieFragment extends Fragment {
     private MovieAdapter adapter;
     private RecyclerView rvMovie;
     private MovieViewModel viewModel;
-    private ArrayList<MovieEntity> movies = new ArrayList<>();
     private ProgressBar progressBar;
 
     public MovieFragment() {
