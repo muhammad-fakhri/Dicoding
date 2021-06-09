@@ -1,10 +1,10 @@
-# FakhriMovie
+# NyxordinalMovie
 
 ## Description
-FakhriMovie is a movie catalogue application that can fetch data from MovieDB API. This project is the final project to fulfill the "Belajar Android Jetpack Pro" by Dicoding. Use Android Native.
+NyxordinalMovie is a movie catalogue application that can fetch data from MovieDB API. This project is the final project to fulfill the "Belajar Android Jetpack Pro" by Dicoding. Use Android Native.
 
 ## Developer Team
-Nyxordinal ([@muhammad-fakhri](https://github.com/nyxordinal))
+Nyxordinal ([@nyxordinal](https://github.com/nyxordinal))
 
 ## Development Tools
 1. Postman
